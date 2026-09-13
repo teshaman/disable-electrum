@@ -1,0 +1,9 @@
+.disable-electrum--hidden,
+input[name="system.currency.ep"],
+input[name="amount.ep"] {
+  display: none !important;
+}
+
+select option[value="ep"] {
+  display: none !important;
+}
