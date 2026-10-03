@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Disable Electrum — Foundry VTT module</title>
+<meta name="description" content="Disable Electrum hides the electrum (EP) currency from D&D 5e character sheets, currency dialogs and price choices in Foundry VTT without deleting stored values. Free, open source (MIT).">
+<style>
+  :root{--bg:#121417;--panel:#1b1f24;--panel2:#22272e;--ink:#e8e9ec;--muted:#a3abb7;--acc:#c0c7d1;--acc2:#e3e8ee;--gold:#d8b25a;--line:#2f353d;--warn:#e0a46a;--link:#9fc3ff}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Georgia,"Times New Roman",serif}
+  a{color:var(--link)}
+  code,pre{font-family:Consolas,"Fira Mono",monospace;font-size:.92em}
+  code{background:#0b0d10;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  pre{background:#0b0d10;border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow:auto}
+  pre code{border:0;background:none;padding:0}
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px}
+  header.hero{background:radial-gradient(ellipse at top,#2b3340 0%,var(--bg) 70%);border-bottom:1px solid var(--line);padding:56px 0 40px;text-align:center}
+  .hero h1{font-size:2.6rem;margin:0 0 8px;color:var(--acc2);letter-spacing:.5px}
+  .hero p.tag{font-size:1.2rem;color:var(--muted);margin:0 auto 20px;max-width:700px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px}
+  .badge{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:.85rem;color:var(--muted)}
+  .badge b{color:var(--gold);font-weight:600}
+  .btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .btn{display:inline-block;background:var(--acc);color:#10141a;text-decoration:none;font-weight:700;padding:10px 18px;border-radius:6px;border:1px solid #8b949e}
+  .btn.alt{background:transparent;color:var(--acc2);border-color:var(--acc)}
+  nav.toc{position:sticky;top:0;z-index:5;background:rgba(18,20,23,.95);border-bottom:1px solid var(--line);backdrop-filter:blur(4px)}
+  nav.toc ul{list-style:none;margin:0;padding:8px 0;display:flex;flex-wrap:wrap;gap:4px 16px;font-size:.9rem}
+  nav.toc a{color:var(--muted);text-decoration:none}
+  nav.toc a:hover{color:var(--acc2)}
+  main section{padding:36px 0 8px;border-bottom:1px solid var(--line)}
+  h2{color:var(--acc2);font-size:1.7rem;margin:0 0 14px}
+  h3{color:var(--ink);font-size:1.2rem;margin:26px 0 8px}
+  .note{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:6px;padding:14px 18px;margin:18px 0}
+  .note.warn{border-left-color:var(--warn)}
+  .note h3{margin-top:0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:16px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+  .card h3{margin:0 0 6px;color:var(--gold);font-size:1.1rem}
+  .card p{margin:6px 0}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.95rem}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--panel2);color:var(--acc2)}
+  tr:nth-child(even) td{background:var(--panel)}
+  ul.feat li{margin:6px 0}
+  .copy{display:flex;gap:8px;align-items:stretch;margin:10px 0}
+  .copy input{flex:1;min-width:0;background:#0b0d10;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 10px;font-family:Consolas,monospace}
+  .copy button{background:var(--acc);border:1px solid #8b949e;border-radius:6px;padding:0 14px;font-weight:700;cursor:pointer;color:#10141a}
+  footer{padding:30px 0 50px;color:var(--muted);font-size:.9rem;text-align:center}
+  .small{color:var(--muted);font-size:.9rem}
+  @media (max-width:600px){.hero h1{font-size:2rem}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Disable Electrum</h1>
+    <p class="tag">A tiny Foundry VTT module for D&amp;D 5e that removes electrum (EP) from every currency field, transfer dialog and price choice, without touching the values already stored in your world.</p>
+    <div class="badges">
+      <span class="badge">Version <b>1.0.0</b></span>
+      <span class="badge">Foundry <b>v13 – v14</b></span>
+      <span class="badge">System <b>dnd5e 5.x</b></span>
+      <span class="badge">License <b>MIT</b></span>
+      <span class="badge"><b>Free</b> and open source</span>
+    </div>
+    <div class="btns">
+      <a class="btn" href="#install">Install</a>
+      <a class="btn alt" href="https://github.com/teshaman/disable-electrum">Source on GitHub</a>
+      <a class="btn alt" href="https://github.com/teshaman/disable-electrum/releases">Releases</a>
+      <a class="btn alt" href="https://teshaman.github.io/lockpick-minigames/">Lockpick Minigames (other module)</a>
+    </div>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap"><ul>
+  <li><a href="#disclaimer">Disclaimer</a></li>
+  <li><a href="#overview">What it does</a></li>
+  <li><a href="#how">How it works</a></li>
+  <li><a href="#notdo">What it does not do</a></li>
+  <li><a href="#install">Install</a></li>
+  <li><a href="#changelog">Changelog</a></li>
+  <li><a href="#license">License</a></li>
+</ul></div></nav>
+
+<main class="wrap">
+
+<section id="disclaimer">
+  <h2>Disclaimer</h2>
+  <div class="note warn">
+    <h3>I own none of this code</h3>
+    <p>I claim no ownership of this code. I only wanted electrum gone from my players' sheets without breaking anything already in the world. I release the whole module as <strong>free, open-source software under the MIT License</strong>, so anyone can use it, study it, change it and redistribute it.</p>
+    <p>No code or asset from any other module or author has been copied into this project. There is no warranty of any kind; use it at your own risk and keep backups of your world.</p>
+  </div>
+</section>
+
+<section id="overview">
+  <h2>What it does</h2>
+  <p>Many tables simply do not use electrum. The D&amp;D 5e system still shows an <strong>EP</strong> box on every character sheet, in the currency-transfer and conversion dialogs, and as a choice in every item's price denomination. Players put coins in it by accident, loot gets priced in it, and the GM spends time cleaning up. Disable Electrum makes the whole denomination disappear from the interface.</p>
+  <div class="grid">
+    <div class="card"><h3>Hidden on actor sheets</h3><p>The EP currency field vanishes from character and NPC sheets, group sheets and any other sheet that shows <code>system.currency.ep</code>. The remaining coins keep their layout.</p></div>
+    <div class="card"><h3>Hidden in currency dialogs</h3><p>Transfer, award and conversion dialogs lose their EP amount field (<code>amount.ep</code>), so nobody can hand out or convert into electrum.</p></div>
+    <div class="card"><h3>Removed from price choices</h3><p>Every denomination dropdown (item prices, shop and loot dialogs, anything that offers <code>ep</code> as an option) has the electrum option disabled and hidden.</p></div>
+    <div class="card"><h3>Nothing is deleted</h3><p>Stored EP balances and items priced in EP stay exactly as they are in the database. Turn the module off and everything is back.</p></div>
+    <div class="card"><h3>Works with other modules</h3><p>It watches the whole page for new windows and sheets, so modules that render their own currency fields (loot sheets, shops, party sheets) are covered too, as long as they use the system's field names.</p></div>
+    <div class="card"><h3>Zero configuration</h3><p>No settings. Enable it and electrum is gone; disable it and electrum is back.</p></div>
+  </div>
+</section>
+
+<section id="how">
+  <h2>How it works</h2>
+  <p>The module deliberately leaves <code>CONFIG.DND5E.currencies.ep</code> alone. Deleting the system's currency definition is the obvious approach, but it makes Foundry drop the EP value the next time any affected document is saved, which silently destroys data and can break items priced in electrum. Instead the module works purely on the rendered interface:</p>
+  <ul class="feat">
+    <li>On <em>ready</em> it scans the page once, then installs a <code>MutationObserver</code> on <code>document.body</code> that catches every newly rendered element.</li>
+    <li>It also hooks <code>renderApplicationV2</code>, <code>renderActorSheet</code> and <code>renderItemSheet</code> so sheets are handled the moment they open.</li>
+    <li>Every input named <code>system.currency.ep</code> or <code>amount.ep</code> is hidden together with its label, marked <code>aria-hidden</code> and taken out of the tab order.</li>
+    <li>Every <code>&lt;option value="ep"&gt;</code> in a select is disabled and hidden.</li>
+    <li>A short stylesheet backs this up with <code>display: none</code> rules, so the fields never flash before the script runs.</li>
+  </ul>
+  <p>The module does nothing at all when the active game system is not dnd5e.</p>
+</section>
+
+<section id="notdo">
+  <h2>What it does not do</h2>
+  <ul class="feat">
+    <li>It does <strong>not</strong> delete or convert existing electrum. If a character already has 12 EP, those coins stay in the database; they simply are not shown. Convert or remove them by hand first if you want a clean sheet.</li>
+    <li>It does <strong>not</strong> change encumbrance, conversion rates or any rule. It is interface only.</li>
+    <li>It does <strong>not</strong> stop a macro or another module from writing EP through the API.</li>
+    <li>It does <strong>not</strong> support other game systems; it is written for the D&amp;D 5e system's field names.</li>
+  </ul>
+</section>
+
+<section id="install">
+  <h2>Install</h2>
+  <p>In Foundry's setup screen open <strong>Add-on Modules → Install Module</strong> and paste this manifest URL:</p>
+  <div class="copy"><input id="manifest" readonly value="https://github.com/teshaman/disable-electrum/releases/latest/download/module.json"><button onclick="navigator.clipboard.writeText(document.getElementById('manifest').value);this.textContent='Copied'">Copy</button></div>
+  <p>Or download <code>module.zip</code> from the <a href="https://github.com/teshaman/disable-electrum/releases">releases page</a> and upload it to The Forge or unzip it into <code>Data/modules</code>. Then enable <strong>Disable Electrum</strong> in the world's Manage Modules. To install a specific older version use <code>https://github.com/teshaman/disable-electrum/releases/download/&lt;version&gt;/module.json</code>.</p>
+  <table>
+    <tr><th>Compatibility</th><th></th></tr>
+    <tr><td>Foundry VTT</td><td>v13 minimum, verified on v14</td></tr>
+    <tr><td>Game system</td><td>D&amp;D 5e (dnd5e) 5.0 – 5.x, verified on 5.3.3</td></tr>
+    <tr><td>Dependencies</td><td>None</td></tr>
+  </table>
+</section>
+
+<section id="changelog">
+  <h2>Changelog</h2>
+  <p>The full history is in <a href="https://github.com/teshaman/disable-electrum/blob/main/CHANGELOG.md">CHANGELOG.md</a>.</p>
+  <ul class="feat">
+    <li><strong>1.0.0</strong> — Initial release. Hides electrum currency fields and prevents electrum from being selected in D&amp;D 5e, without deleting stored EP values.</li>
+  </ul>
+</section>
+
+<section id="license">
+  <h2>License</h2>
+  <p>Disable Electrum is released under the <a href="https://github.com/teshaman/disable-electrum/blob/main/LICENSE">MIT License</a>. You may use, copy, modify, merge, publish, distribute, sublicense and sell copies, provided the license notice stays with it. The software is provided "as is", without warranty of any kind.</p>
+  <p>See the <a href="#disclaimer">disclaimer</a> above: I claim no ownership of the code.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Disable Electrum · <a href="https://github.com/teshaman/disable-electrum">GitHub</a> · <a href="https://github.com/teshaman/disable-electrum/issues">Report an issue</a> · <a href="https://teshaman.github.io/lockpick-minigames/">Lockpick Minigames</a><br>
+    Not affiliated with Foundry Gaming LLC or Wizards of the Coast. Foundry VTT is a trademark of Foundry Gaming LLC.
+  </div>
+</footer>
+</body>
+</html>
